@@ -1,0 +1,106 @@
+﻿@model FootballLeagueMvcProject.ViewModels.TeamProfileViewModel
+@{
+    ViewData["Title"] = "Профиль команды";
+}
+
+<h3 class=" bg-info text-white p-2 text-center mx-0">Профиль команды</h3>
+
+<div class="row">
+    <div class="col-md m-2">
+        <div class="text-center">
+            @{
+                var logoPath = "/teamlogos/" + Model.Logo;
+            }
+            <img src="@logoPath" asp-append-version="true" width="255" style="border-radius:20%" />
+        </div>
+    </div>
+    <div class="col-md m-2">
+        <div class="bg-secondary text-white text-center my-auto"><h3>@Model.Name</h3></div>
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="text-right">
+                <form asp-action="DeleteTeam" asp-controller="Team"><input hidden value="@Model.TeamId" name="id" /><button class="btn btn-danger" type="submit">Удалить команду</button></form>
+            </div>
+        }
+    </div>
+</div>
+<div class="row mx-0 my-3 bg-info p-2 font-weight-bold">
+    <ul class="nav nav-pills mx-auto" id="pills-tab" role="tablist">
+        <li class="nav-item mx-auto">
+            <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Состав команды</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Игры</a>
+        </li>
+    </ul>
+</div>
+
+<div class="row mx-0 my-3">
+    <div class="tab-content col mx-0" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+            <h3 class="p-2 bg-info text-white text-center mb-2">Состав команды</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered table-dark table-hover text-center text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="align-middle">Профиль игрока</th>
+                            <th scope="col" class="align-middle">Фото</th>
+                            <th scope="col" class="align-middle">Игровой номер</th>
+                            <th scope="col" class="align-middle">Имя</th>
+                            <th scope="col" class="align-middle">Фамилия</th>
+                            <th scope="col" class="align-middle">Отчество</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.PlayersListViewModels)
+                        {
+                            var photoPath = "/Photos/" + item.Photo;
+                            <tr>
+                                <th class="align-middle"><a asp-controller="Player" asp-action="Profile" asp-route-id="@item.Id" class="text-success">В профиль</a></th>
+                                <td class="align-middle"><img src="@photoPath" asp-append-version="true" height="80" /></td>
+                                <td class="align-middle">@item.AtNumber</td>
+                                <td class="align-middle">@item.Name</td>
+                                <td class="align-middle">@item.LastName</td>
+                                <td class="align-middle">@item.Patronymic</td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+           
+        </div>
+        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <div class="table-responsive">
+
+                <h3 class="p-2 bg-info text-white text-center mb-2">Игры команды</h3>
+                <table class="table table-bordered table-dark table-hover text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col">Матчи</th>
+                            <th scope="col">Имя домашней команды</th>
+                            <th scope="col">Имя гостевой команды</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.FixtureViewModels)
+                        {
+
+                            <tr>
+                                <th class="align-middle"><a asp-controller="Fixture" asp-action="Details" asp-route-id="@item.FixtureId" class="text-success"><p>Детали</p></a></th>
+                                <th class="align-middle">@item.HomeTeam</th>
+                                <th class="align-middle">@item.AwayTeam</th>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+
+

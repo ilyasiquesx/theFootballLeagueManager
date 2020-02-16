@@ -1,0 +1,58 @@
+﻿@model IEnumerable<FootballLeagueMvcProject.ViewModels.TableViewModel>
+@{
+    ViewData["Title"] = "Турнирная таблица";
+}
+<h1 class="p-4 bg-info text-white text-center">Турнирная таблица</h1>
+<hr />
+<div class="table-responsive-sm">
+    <table class="table table-bordered  table-light table-striped table-hover text-center">
+        <thead>
+            <tr>
+                <th scope="col">Место</th>
+                <th scope="col">Команда</th>
+                <th scope="col">И</th>
+                <th scope="col">В</th>
+                <th scope="col">Н</th>
+                <th scope="col">П</th>
+                <th scope="col">Мячи</th>
+                <th scope="col">Очки</th>
+                <th scope="col">Форма</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @{int counter = 1; }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th scope="col" class="align-middle">@counter.ToString()</th>
+                    <th scope="col" class="align-middle"><a asp-action="Profile" asp-controller="Team" asp-route-id="@item.TeamId">@item.TeamName</a></th>
+                    <th scope="col" class="align-middle">@item.Matches</th>
+                    <th scope="col" class="align-middle">@item.Wins</th>
+                    <th scope="col" class="align-middle">@item.Draws</th>
+                    <th scope="col" class="align-middle">@item.Losses</th>
+                    <th scope="col" class="align-middle">@item.TotalGoals - @item.TotalMisses</th>
+                    <th scope="col" class="align-middle">@item.Points</th>
+                    <th class="align-middle">
+                        @foreach (var f in item.LastFive)
+                        {
+                            if (f.Result == 'В')
+                            {
+                                <a asp-action="Details" asp-controller="Fixture" asp-route-id="@f.FixtureId"><div class="dot win"></div></a>
+                            }
+                            else if (f.Result == 'Н')
+                            {
+                                <a asp-action="Details" asp-controller="Fixture" asp-route-id="@f.FixtureId"><div class="dot draw"></div></a>
+                            }
+                            else if (f.Result == 'П')
+                            {
+                                <a asp-action="Details" asp-controller="Fixture" asp-route-id="@f.FixtureId"><div class="dot lose"></div></a>
+                            }
+                        }
+                    </th>
+                </tr>
+                counter++;
+            }
+        </tbody>
+    </table>
+</div>

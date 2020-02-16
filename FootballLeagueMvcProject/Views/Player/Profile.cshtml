@@ -1,0 +1,52 @@
+﻿@model FootballLeagueMvcProject.ViewModels.PlayerProfileViewModel
+
+@{
+    ViewData["Title"] = "Профиль игрока";
+}
+
+<h3 class="bg-info text-white p-2 text-center">Профиль игрока</h3>
+
+
+
+<div class="row text-center my-auto">
+    <div class="col-md-3">
+        @{var photoPath = "~/Photos/" + (Model.Photo); }
+        <img src="@photoPath" height="200" asp-append-version="true" />
+    </div>
+    <div class="col-md-5">
+        <div class="m-2">
+            <p class="bg-secondary text-white d-inline rounded p-1 font-weight-bold">@Model.AtNumber</p>
+            <p class="d-inline bg-warning rounded p-1">@Model.LastName @Model.FirstName @Model.Patronymic</p>
+        </div>
+        <table class="table ">
+            <tbody>
+                <tr>
+                    <th>Дата рождения: </th>
+                    <td>@Model.DateOfBirth.ToString("dd/MM/yyyy")</td>
+                </tr>
+                <tr>
+                    <th>Возраст: </th>
+                    <td>@Model.Ages</td>
+                </tr>
+                <tr>
+                    <th>Позиция: </th>
+                    <td>@Model.Role</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+
+        @if (Model.TeamName == null)
+        {
+            <div class="bg-secondary p-2 text-white my-auto">Свободный агент</div>
+        }
+        else
+        {
+            var teamLogoPath = "~/teamlogos/" + Model.TeamLogo;
+            <a asp-action="Profile" asp-controller="Team" asp-route-id="@Model.TeamId"><img src="@teamLogoPath" asp-append-version="true" height="200" /></a>
+            <div class="text-center text-white rounded"><a asp-action="Profile" asp-controller="Team" asp-route-id="@Model.TeamId">@Model.TeamName</a></div>
+        }
+    </div>
+</div>
+

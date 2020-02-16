@@ -1,0 +1,179 @@
+﻿@model FootballLeagueMvcProject.ViewModels.ManageGoalsViewModel
+@{
+    ViewData["Title"] = "Добавить информацию о голах";
+}
+
+<h2 class="bg-info text-white text-center p-2">Внесение информации о голах</h2>
+<form method="post">
+
+    <input hidden asp-for="@Model.FixtureId" value="@Model.FixtureId" />
+
+    <h3 class="bg-info text-white text-center p-2">Укажите подробности результатов для команды "@Model.HomeTeamName"</h3>
+
+    @{ int goalCounter = 0; int cardCounter = 0;}
+
+    @if (Model.HomeTeamScore == 0 && Model.HomeTeamCards == 0)
+    {
+        <h3 class="bg-danger text-white text-center p-2">Данная команда не забивала в этом матче</h3>
+    }
+    else
+    {
+        <div class="bg-secondary p-4">
+            @for (int i = 0; i < Model.HomeTeamScore; i++)
+            {
+                <h4 class="p-2 bg-warning  text-center">Гол</h4>
+                <div class="row bg-info p-2 mx-0 my-2 rounded">
+                    <div class="form-group col">
+                        <label asp-for="@Model.GoalsViewModels[goalCounter].AuthorId">Автор гола</label>
+                        <select asp-for="@Model.GoalsViewModels[goalCounter].AuthorId" class="custom-select">
+                            @foreach (var item in Model.PlayersListViewModelsHomeTeam)
+                            {
+                                <option value="@item.Id">@item.Name @item.LastName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col">
+                        <label asp-for="@Model.GoalsViewModels[goalCounter].AssistId">Автор ассиста</label>
+                        <select asp-for="@Model.GoalsViewModels[goalCounter].AssistId" class="custom-select">
+                            <option selected value="">Без ассиста</option>
+                            @foreach (var item in Model.PlayersListViewModelsHomeTeam)
+                            {
+                                <option value="@item.Id">@item.Name @item.LastName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col">
+                        <label asp-for="@Model.GoalsViewModels[goalCounter].AtMinute">Минута гола</label>
+                        <input class="form-control" type="number" min="1"max="50" value="17" asp-for="@Model.GoalsViewModels[goalCounter].AtMinute">
+                    </div>
+                </div>
+
+                goalCounter++;
+            }
+
+            @for (int i = 0; i < Model.HomeTeamCards; i++)
+            {
+
+                <h4 class="p-2 bg-success  text-center">Карточка</h4>
+                <div class="row bg-info p-2 mx-0 my-2 rounded">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="@Model.CardViewModel[cardCounter].Type">Укажите тип карточки</label>
+                            <select asp-for="@Model.CardViewModel[cardCounter].Type" class="custom-select">
+                                @foreach (var item in Model.CardTypes)
+                                {
+                                    <option value="@item.ToString()">@item</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="@Model.CardViewModel[cardCounter].PlayerName">Игрок, получивший карточку</label>
+                            <select asp-for="@Model.CardViewModel[cardCounter].PlayerId" class="custom-select">
+                                @foreach (var item in Model.PlayersListViewModelsHomeTeam)
+                                {
+                                    <option value="@item.Id">@item.Name @item.LastName</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="@Model.CardViewModel[cardCounter].AtMinute">Получена на минуте</label>
+                            <input class="form-control" type="number" min="1" max="100" value="17" asp-for="@Model.CardViewModel[cardCounter].AtMinute">
+                        </div>
+                    </div>
+                </div>
+                cardCounter++;
+            }
+        </div>
+    }
+
+
+
+
+    <h3 class="bg-info text-white text-center p-2 mt-4">Укажите подробности результатов для команды "@Model.AwayTeamName"</h3>
+
+    @if (Model.AwayTeamScore == 0 && Model.AwayTeamCards == 0)
+    {
+        <h3 class="bg-danger text-white text-center p-2">Данная команда не забивала в этом матче</h3>
+    }
+    else
+
+    {
+
+        <div class="bg-secondary p-4">
+            @for (int i = 0; i < Model.AwayTeamScore; i++)
+            {
+                    <h4 class="p-2 bg-warning  text-center">Гол</h4>
+                    <div class="row bg-info p-2 mx-0 rounded">
+                        <div class="form-group col">
+                            <label asp-for="@Model.GoalsViewModels[goalCounter].AuthorId">Автор гола</label>
+                            <select asp-for="@Model.GoalsViewModels[goalCounter].AuthorId" class="custom-select">
+                                @foreach (var item in Model.PlayersListViewModelsAwayTeam)
+                                {
+                                    <option value="@item.Id">@item.Name @item.LastName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group col">
+                            <label asp-for="@Model.GoalsViewModels[goalCounter].AssistId">Автор ассиста</label>
+                            <select asp-for="@Model.GoalsViewModels[goalCounter].AssistId" class="custom-select">
+                                <option selected value="">Без ассиста</option>
+                                @foreach (var item in Model.PlayersListViewModelsAwayTeam)
+                                {
+                                    <option value="@item.Id">@item.Name @item.LastName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group col">
+                            <label asp-for="@Model.GoalsViewModels[goalCounter].AtMinute">Минута гола</label>
+                            <input class="form-control" type="number" min="1" max="50" value="17" asp-for="@Model.GoalsViewModels[goalCounter].AtMinute">
+                        </div>
+                    </div>
+                goalCounter++;
+            }
+            @for (int i = 0; i < Model.AwayTeamCards; i++)
+            {
+
+                <h4 class="p-2 bg-success  text-center">Карточка</h4>
+                <div class="row bg-info p-2 mx-0 my-2 rounded">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="@Model.CardViewModel[cardCounter].Type">Укажите тип карточки</label>
+                            <select asp-for="@Model.CardViewModel[cardCounter].Type" class="custom-select">
+                                @foreach (var item in Model.CardTypes)
+                                {
+                                    <option value="@item">@item</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="@Model.CardViewModel[cardCounter].PlayerName">Игрок, получивший карточку</label>
+                            <select asp-for="@Model.CardViewModel[cardCounter].PlayerId" class="custom-select">
+                                @foreach (var item in Model.PlayersListViewModelsAwayTeam)
+                                {
+                                    <option value="@item.Id">@item.Name @item.LastName</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="@Model.CardViewModel[cardCounter].AtMinute">Получена на минуте</label>
+                            <input class="form-control" type="number" min="0" max="100" value="17" asp-for="@Model.CardViewModel[cardCounter].AtMinute">
+                        </div>
+                    </div>
+                </div>
+                cardCounter++;
+            }
+            </div>
+            }
+            <div class="text-right my-2">
+                <button type="submit" class="btn btn-success">Отправить</button>
+            </div>
+    </form>
+

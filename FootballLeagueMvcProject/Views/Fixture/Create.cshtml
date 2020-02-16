@@ -1,0 +1,47 @@
+﻿@model FootballLeagueMvcProject.ViewModels.CreateFixtureViewModel
+@{
+    ViewData["Title"] = "Создать встречу";
+}
+
+<h1 class="text-center p-3 bg-info text-white">Создать событие встречи между двумя командами</h1>
+
+<form asp-action="Create" asp-controller="Fixture" method="post">
+
+    <input hidden asp-for="CompetitionId" value="@Model.CompetitionId" />
+    <div class="row text-center">
+        <div class="col">
+            <label class="my-1 mr-2 text-dark" for="inlineFormCustomSelectPref">Команда 1</label>
+            <select asp-for="@Model.HomeTeamId" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+                @if (Model.TeamViewModels.Count() == 0)
+                {
+                    <option selected disabled value="0">Список команд пуст</option>
+                }
+                @foreach (var item in Model.TeamViewModels)
+                {
+                    <option value="@item.TeamId">@item.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col">
+            <label class="my-1 mr-2 text-dark" for="inlineFormCustomSelectPref">Команда 2</label>
+            <select asp-for="@Model.AwayTeamId" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+                @if (Model.TeamViewModels.Count() == 0)
+                {
+                    <option selected disabled value="0">Список команд пуст</option>
+                }
+                @foreach (var item in Model.TeamViewModels)
+                {
+                    <option value="@item.TeamId">@item.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col">
+            <label asp-for="@Model.AppointedTime" class="col-form-label col">День проведения матча: </label>
+            @{ string dt = DateTime.Now.ToString("yyyy-MM-dd") + "T19:00" ;}
+            <input value="@dt" class="form-control" type="datetime-local" asp-for="@Model.AppointedTime" />
+        </div>
+    </div>
+    <div class="col text-center">
+        <button type="submit" class="btn btn-info my-3">Создать событие</button>
+    </div>
+</form>

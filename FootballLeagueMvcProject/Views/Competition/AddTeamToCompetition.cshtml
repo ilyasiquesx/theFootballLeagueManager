@@ -1,0 +1,27 @@
+﻿@model FootballLeagueMvcProject.ViewModels.AddTeamToCompetitionViewModel
+@{
+    ViewData["Title"] = "Заявить команду";
+}
+
+<div class="bg-info text-white text-center  h5 p-2 my-2">Добавить команду для участия в соревновании</div>
+
+<form asp-action="AddTeamToCompetition" asp-controller="Competition" method="post">
+    <div class="text-center mx-auto w-50">
+        <input asp-for="CompetitionId" value="@Model.CompetitionId" hidden />
+        <div class="form-group">
+            <select class="browser-default custom-select" asp-for="TeamId">
+                @if (Model.TeamViewModels.Count() == 0)
+                {
+                    <option selected disabled value="0">Список команд пуст</option>
+                }
+
+                @foreach (var item in Model.TeamViewModels)
+                {
+                    <option value="@item.TeamId">@item.Name</option>
+                }
+            </select>
+        </div>
+        <button type="submit" class="btn btn-info">Отправить</button>
+    </div>
+</form>
+

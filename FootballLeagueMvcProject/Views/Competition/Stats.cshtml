@@ -1,0 +1,97 @@
+﻿@model FootballLeagueMvcProject.ViewModels.StatViewModel
+@{
+    ViewData["Title"] = "Статистика игроков";
+}
+<h1 class="p-4 bg-info text-white text-center">Статистика игроков</h1>
+
+<hr />
+<ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Список бомбардиров</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Список ассистентов</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Гол + пас</a>
+    </li>
+</ul>
+<div class="tab-content text-center " id="pills-tabContent">
+    <div class="tab-pane fade show active table-responsive-sm" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+        <table class="table  table-bordered table-light table-striped table-hover text-center ">
+            <thead>
+                <tr>
+                    <th scope="col">Место</th>
+                    <th scope="col">Имя игрока</th>
+                    <th scope="col">Команда</th>
+                    <th scope="col">Количество голов</th>
+                </tr>
+            </thead>
+            @{int strikersCounter = 1;}
+            <tbody>
+                @foreach (var item in Model.ListOfStrikers)
+                {
+                    <tr>
+                        <th>@strikersCounter</th>
+                        <th><a asp-action="Profile" asp-controller="Player" asp-route-id="@item.PlayerId">@item.PlayerFullName</a></th>
+                        <th><a asp-action="Profile" asp-controller="Team" asp-route-id="@item.PlayerTeamId"> @item.PlayerTeamName</a></th>
+                        <th>@item.CountOfGoals</th>
+                        @{strikersCounter++;}
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade table-responsive-sm" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+        <table class="table   table-bordered table-light table-striped table-hover text-center">
+            <thead>
+                <tr>
+                    <th scope="col">Место</th>
+                    <th scope="col">Имя игрока</th>
+                    <th scope="col">Команда</th>
+                    <th scope="col">Количество передач</th>
+                </tr>
+            </thead>
+            @{int assistantsCounter = 1;}
+            <tbody>
+                @foreach (var item in Model.ListOfAssistans)
+                {
+                    <tr>
+                        <th>@assistantsCounter</th>
+                        <th><a asp-action="Profile" asp-controller="Player" asp-route-id="@item.PlayerId">@item.PlayerFullName</a></th>
+                        <th><a asp-action="Profile" asp-controller="Team" asp-route-id="@item.PlayerTeamId"> @item.PlayerTeamName</a></th>
+                        <th>@item.CountOfAssists</th>
+                        @{assistantsCounter++;}
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade table-responsive-sm" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+        <table class="table  table-bordered table-light table-striped table-hover text-center">
+            <thead>
+                <tr>
+                    <th scope="col">Место</th>
+                    <th scope="col">Имя игрока</th>
+                    <th scope="col">Команда</th>
+                    <th scope="col">Количество очков</th>
+                </tr>
+            </thead>
+            @{int universalsCounter = 1;}
+            <tbody>
+                @foreach (var item in Model.ListOfUniversals)
+                {
+                    <tr>
+                        <th>@universalsCounter</th>
+                        <th><a asp-action="Profile" asp-controller="Player" asp-route-id="@item.PlayerId">@item.PlayerFullName</a></th>
+                        <th><a asp-action="Profile" asp-controller="Team" asp-route-id="@item.PlayerTeamId"> @item.PlayerTeamName</a></th>
+                        <th>@item.SumOfGoalsAndAssists</th>
+                        @{universalsCounter++;}
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

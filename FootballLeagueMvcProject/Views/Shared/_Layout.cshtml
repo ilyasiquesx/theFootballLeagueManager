@@ -1,0 +1,72 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - МФЛК</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+</head>
+<body style="background:#77c9d4;">
+    <div class="container-fluid">
+        <div class="row" style="background: #F3F9F8">
+            <div class="col-xl my-auto">
+                <nav class="navbar navbar-light bg-light justify-content-center">
+                    <div class="form-inline text-right">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <form method="post">
+                                <button type="submit" asp-action="Logout" asp-controller="Account" class="btn btn-sm btn-outline-warning m-2">Выйти</button>
+                            </form>
+
+                            if (User.IsInRole("Admin"))
+                            {
+                                <a class="btn btn-sm btn-outline-danger m-2" asp-action="Dashboard" asp-controller="Account">Управление модераторами</a>
+                            }
+
+                            <div class="">
+                                <p class="my-auto">Добро пожаловать, @User.Identity.Name</p>
+                            </div>
+
+                        }
+                        else
+                        {
+                            <a class="btn btn-sm btn-outline-success m-2" asp-action="Login" asp-controller="Account">Войти</a>
+                        }
+                    </div>
+                </nav>
+            </div>
+            <div class="col-xl my-auto">
+                <div class="display-4 p-2 text-center bg-dark rounded" sstyle="color: #66fcf1"><a asp-action="Index" asp-controller="Home" class="text-white">МФЛК</a></div>
+            </div>
+            <div class="col-xl my-auto ">
+                <header>
+                    <nav class="navbar navbar-light bg-light justify-content-center">
+                        <form class="form-inline ">
+                            <a class="btn btn-sm btn-outline-secondary m-2" asp-action="Index" asp-controller="Home">Главная</a>
+                            <a class="btn btn-sm btn-outline-secondary m-2" asp-action="Index" asp-controller="Championship">Соревнования</a>
+                            <a class="btn btn-sm btn-outline-secondary m-2" asp-action="Index" asp-controller="Team">Команды</a>
+                            <a class="btn btn-sm btn-outline-secondary m-2" asp-action="Index" asp-controller="Player">Свободные агенты</a>
+                        </form>
+                    </nav>
+                </header>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="container box-shadow mt-4 p-2 " style="background:#C1F7EC ">
+        <main role="main" class="">
+            @RenderBody()
+        </main>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

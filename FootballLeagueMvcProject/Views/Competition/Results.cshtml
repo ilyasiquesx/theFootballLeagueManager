@@ -1,0 +1,119 @@
+﻿@model FootballLeagueMvcProject.ViewModels.ResultsViewModel
+@{
+    ViewData["Title"] = "Результаты";
+}
+
+<h1 class="p-4 bg-info text-white text-center">Список встреч</h1>
+
+<hr />
+
+@if (User.IsInRole("Admin"))
+{
+    <div class="my-3 text-right">
+        <a asp-action="Create" asp-controller="Fixture" asp-route-id="@Model.ChampionshipId"><div class="btn btn-danger">Назначить встречу</div></a>
+    </div>
+}
+<div class="table-responsive">
+    <table class="table table-bordered table-dark table-striped table-hover text-center">
+        <thead>
+            <tr>
+                <th scope="col">Имя домашней команды</th>
+                <th scope="col">Счёт</th>
+                <th scope="col">Имя гостевой команды</th>
+                <th scope="col">Статус</th>
+                <th scope="col">Время проведения</th>
+                @if (User.IsInRole("Admin"))
+                {
+                    <th scope="col">Доп. инфо</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+
+            @if (Model.FixtureViewModels.Count() == 0)
+            {
+                <tr>
+                    <th class="align-middle" colspan="6">
+                        <p class="bg-secondary p-2">
+                            В данном соревновании ещё матчи не запланированы
+                        </p>
+                    </th>
+                </tr>
+            }
+
+            @foreach (var item in Model.FixtureViewModels)
+            {
+                var homeLogoPath = "~/teamlogos/" + item.HomeTeamLogo;
+                var awayLogoPath = "~/teamlogos/" + item.AwayTeamLogo;
+                <tr>
+                    <th class="align-middle">
+                        <a asp-controller="Team" asp-action="Profile" asp-route-id="@item.HomeTeamId">@item.HomeTeam <img src="@homeLogoPath" height="30" asp-append-version="true" /></a>
+                    </th>
+                    <th class="align-middle">
+                        @if (item.TechDefeatedTeamId == item.HomeTeamId && item.IsTechDefeat)
+                        {
+                            <p>0 : 5</p>
+                        }
+                        else if (item.TechDefeatedTeamId == item.AwayTeamId && item.IsTechDefeat)
+                        {
+                            <p>5 : 0</p>
+                        }
+                        else
+                        {
+                            <p>@item.HomeTeamScore : @item.AwayTeamScore</p>
+                        }
+                    </th>
+                    <th class="align-middle"> <a asp-controller="Team" asp-action="Profile" asp-route-id="@item.AwayTeamId"> <img src="@awayLogoPath" height="30" asp-append-version="true" /> @item.AwayTeam</a></th>
+                    <th class="align-middle">
+
+                        @if (item.IsTechDefeat)
+                        {
+                            <a asp-controller="Fixture" asp-action="Details" asp-route-id="@item.FixtureId">
+                                <p class="bg-danger my-auto">Техническое поражение</p>
+                            </a>
+                        }
+                        else if (item.Status)
+                        {
+                            <a asp-controller="Fixture" asp-action="Details" asp-route-id="@item.FixtureId"><p class="bg-success my-auto">Матч завершен</p></a>
+                        }
+                        else if (!item.Status)
+                        {
+                            <a asp-controller="Fixture" asp-action="Details" asp-route-id="@item.FixtureId">
+                                <p class="bg-warning my-auto">Матч запланирован</p>
+                            </a>
+                        }
+
+                    </th>
+                    <th>
+                        <p class="mb-0">@item.AppointedTime.ToString("HH\\:mm")</p><p>@item.AppointedTime.ToString("dd/MM/yyyy")</p>
+                    </th>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <th class="align-middle">
+                            <form method="post" asp-controller="Fixture" asp-action="Delete">
+                                <input hidden name="FixtureId" value="@item.FixtureId">
+                                <input hidden name="CompetitionId" value="@Model.ChampionshipId" />
+                                <button type="submit" class="btn btn-sm btn-info">Удалить</button>
+                            </form>
+                        </th>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="text-center">
+        <nav>
+            <ul class="pagination pagination-sm">
+
+                @for (int i = 0; i < Model.countOfPages; i++)
+                {
+                    var pageId = i + 1;
+                    <li class="page-item">
+                        <a class="page-link" asp-action="Results" asp-controller="Competition" asp-route-id="@Model.ChampionshipId" asp-route-pageId="@pageId" name="pageId" tabindex="-1">@pageId</a>
+</li>
+                }
+            </ul>
+        </nav>
+    </div>
+    
+</div>

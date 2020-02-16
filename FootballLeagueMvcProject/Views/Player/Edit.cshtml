@@ -1,0 +1,53 @@
+﻿@model FootballLeagueMvcProject.ViewModels.EditPlayerViewModel
+@{
+    ViewData["Title"] = "Изменение игрока";
+}
+
+<h1 class="p-4 bg-info text-white text-center">Установка команды игроку</h1>
+
+
+<form enctype="multipart/form-data" method="post">
+    <div class="form-group bg-info p-2 text-white rounded">
+        <input hidden asp-for="PlayerId" value="@Model.PlayerId" />
+        <div class="row mx-0">
+            <div class="col">
+                <label asp-for="FullName" class="col-form-label col"> Имя игрока: </label>
+                <input type="text" disabled class="form-control" value="@Model.FullName" />
+            </div>
+            <div class="col">
+                <label asp-for="DateOfBirth" class="col-form-label col"> День рождения:  </label>
+                <div class="col">
+                    <input type="text" disabled class="form-control" value="@Model.DateOfBirth" />
+                </div>
+            </div>
+            <div class="col">
+                <label asp-for="AtNumber" class="col-form-label col"> Игровой номер:  </label>
+                <div class="col">
+                    <input type="text" disabled class="form-control" value="@Model.AtNumber" />
+                </div>
+            </div>
+            <div class="col">
+                <label asp-for="Role" class="col-form-label col">Амплуа: </label>
+                <div class="col">
+                    <input type="text" disabled class="form-control" value="@Model.Role" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group bg-info p-2 text-white row mx-0 rounded">
+        <label asp-for="TeamId" class="col-form-label">Выберите команду игрока</label>
+        <div class="col">
+            <select asp-for="TeamId" class="form-control">
+                @foreach (var item in Model.TeamViewModels)
+                {
+                    <option value="@item.TeamId">
+                        @item.Name
+                    </option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="text-right">
+        <input type="submit" class="btn btn-success" value="Отправить" />
+    </div>
+</form>

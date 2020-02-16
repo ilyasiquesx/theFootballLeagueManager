@@ -1,0 +1,71 @@
+﻿@model FootballLeagueMvcProject.ViewModels.ManageFixtureViewModel
+@{
+    ViewData["Title"] = "Внесение изменение во встречу";
+}
+
+<h1 class="text-center p-3 bg-info text-white">Внести изменения в результаты матчат</h1>
+
+<form method="post">
+    <fieldset disabled>
+        <div class="form-group row text-center bg-info text-white p-2 mx-0">
+            <div class="col-md">
+                <label asp-for="HomeTeamName">Домашняя команда</label>
+                <input type="text" asp-for="HomeTeamName" class="form-control" value="@Model.HomeTeamName">
+            </div>
+            <div class="col-md">
+                <label asp-for="AwayTeamName">Гостевая команда</label>
+                <input type="text" class="form-control" value="@Model.AwayTeamName">
+            </div>
+
+        </div>
+    </fieldset>
+    <input hidden asp-for="HomeTeamName" value="@Model.HomeTeamName" />
+    <input hidden asp-for="AwayTeamName" value="@Model.AwayTeamName" />
+    <input hidden asp-for="FixtureId" value="@Model.FixtureId" />
+    <div class="form-group row text-center bg-info text-white p-2 mx-0">
+
+        <label class="col-md-4 col-form-label">Кол-во голов домашней команды</label>
+        <div class="col-md-2">
+            <input class="form-control" type="number" min="0" asp-for="HomeTeamScores">
+        </div>
+
+        <label class="col-md-4 col-form-label">Кол-во карточек домашней команды</label>
+        <div class="col-md-2">
+            <input class="form-control" type="number" min="0" asp-for="HomeTeamCards">
+        </div>
+        <label for="example-number-input" class="col-md-4 col-form-label">Кол-во голов гостевой команды</label>
+        <div class="col-md-2">
+            <input class="form-control" type="number" min="0" asp-for="AwayTeamScores">
+        </div>
+
+        <label for="example-number-input" class="col-md-4 col-form-label">Кол-во карточек гостевой команды</label>
+        <div class="col-md-2">
+            <input class="form-control" type="number" min="0" asp-for="AwayTeamCards">
+        </div>
+    </div>
+    <div class="row text-black text-center">
+        <div class="col form-group my-auto">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" asp-for="IsTechDefeat">
+                <label class="form-check-label text-danger font" for="inlineCheckbox1">Техническое поражение</label>
+            </div>
+        </div>
+        <div class="col">
+            <label class="" for="inlineFormCustomSelectPref">Команда, получившая техническое поражение</label>
+            <select asp-for="@Model.TechDefeatedTeamId" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+                <option value="0" selected>Не техническое поражение</option>
+                @if (Model.TeamViewModels.Count() == 0)
+                {
+                    <option selected disabled value="0">Список команд пуст</option>
+                }
+                @foreach (var item in Model.TeamViewModels)
+                {
+                    <option value="@item.TeamId">@item.Name</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="text-right mt-4">
+        <button class="btn btn-success" type="submit">Отправить</button>
+    </div>
+</form>

@@ -1,0 +1,223 @@
+﻿@model FootballLeagueMvcProject.ViewModels.FixtureViewModel
+
+@{
+    ViewData["Title"] = "Подробности встречи";
+}
+<h2 class="bg-info text-white text-center p-2">Информация о мачте между командами @Model.HomeTeam и @Model.AwayTeam</h2>
+
+
+<div class="row">
+    <div class="col-12">
+        @if (Model.IsTechDefeat)
+        {
+            <div class="bg-danger rounded">
+                <h3 class="p-2 text-center text-white">Техническое поражение</h3>
+            </div>
+        }
+        else if (Model.Status)
+        {
+            <div class="bg-success rounded">
+                <h3 class="p-2  text-center text-white">МАТЧ СЫГРАН</h3>
+            </div>
+        }
+        else
+        { <div class="bg-danger rounded">
+                <h3 class="p-2 text-center text-white">МАТЧ НЕ СЫГРАН</h3>
+            </div>
+        }
+    </div>
+</div>
+
+
+<div class="row text-center">
+    <div class="col-md mb-2 my-auto">
+        @if (Model.HomeTeamId == Model.TechDefeatedTeamId && Model.IsTechDefeat)
+        {
+            <div class="h4 text-dark"><a asp-action="Profile" asp-controller="Team" asp-route-id="@Model.HomeTeamId">@Model.HomeTeam</a></div>
+            <p class="bg-danger m-4">Техническое поражение</p>
+        }
+        else
+        {
+            <div class="col h4 text-dark"><a asp-action="Profile" asp-controller="Team" asp-route-id="@Model.HomeTeamId">@Model.HomeTeam</a></div>
+        }
+    </div>
+    <div class="col-md-2 bg-warning rounded mx-4 my-auto">
+        @if (Model.Status)
+        {
+            @if (Model.TechDefeatedTeamId == Model.HomeTeamId && Model.IsTechDefeat)
+            {
+                <div class="col h4 text-dark">0 : 5</div>
+            }
+            else if (Model.TechDefeatedTeamId == Model.AwayTeamId && Model.IsTechDefeat)
+            {
+                <div class="col h4 text-dark">5 : 0</div>
+            }
+            else
+            {
+                <div class="col h4 text-dark">@Model.HomeTeamScore : @Model.AwayTeamScore</div>
+            }
+        }
+        else
+        {
+            <div class="col h4 text-dark">
+                - : -
+            </div>
+        }
+    </div>
+    <div class="col-md mt-2 my-auto">
+        @if (Model.AwayTeamId == Model.TechDefeatedTeamId && Model.IsTechDefeat)
+        {
+            <div class="col h4 text-dark"><a asp-action="Profile" asp-controller="Team" asp-route-id="@Model.AwayTeamId">@Model.AwayTeam</a></div>
+            <p class="bg-danger m-4">Техническое поражение</p>
+        }
+        else
+        {
+            <div class="col h4 text-dark"><a asp-action="Profile" asp-controller="Team" asp-route-id="@Model.AwayTeamId">@Model.AwayTeam</a></div>
+        }
+    </div>
+</div>
+<hr />
+<div class="row text-center mt-4">
+    <div class="col-md">
+        <p class="mt-2 bg-success text-white font-weight-bold">Голы комадны @Model.HomeTeam</p>
+        <hr />
+        @if (Model.Status && (Model.HomeTeamGoals.Count() != 0 ))
+        {
+            @foreach (var item in Model.HomeTeamGoals)
+            {
+
+                <div class="row text-center text-dark">
+                    <div class="col-sm-2">
+                        <img src="https://www.freepnglogos.com/uploads/football-png/drawing-football-photo-4.png" height="20" />
+                    </div>
+                    <div class="col-sm-8">
+                        @if (item.AssistName != null)
+                        {
+                            <a asp-action="Profile" asp-controller="Player" asp-route-id="@item.AuthorId" class="text-dark"> @item.AuthorName </a> <a asp-action="Profile" asp-controller="Player" asp-route-id="@item.AssistId" class="">(@item.AssistName)</a>
+
+                        }
+                        else
+                        {
+                            <a asp-action="Profile" asp-controller="Player" asp-route-id="@item.AuthorId" class="text-dark"> @item.AuthorName </a>
+                        }
+                    </div>
+                    <div class="col-sm-2">@item.AtMinute'</div>
+                </div>
+            }
+
+        }
+        <hr />
+
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md">
+        <p class="mt-2 bg-success text-white font-weight-bold">Голы команды @Model.AwayTeam</p>
+        <hr />
+        @if (Model.Status && Model.AwayTeamGoals != null)
+        {
+            @foreach (var item in Model.AwayTeamGoals)
+            {
+                <div class="row text-center text-dark">
+
+                    <div class="col-sm-2">@item.AtMinute'</div>
+
+                    <div class="col-sm-8">
+                        @if (item.AssistName != null)
+                        {
+                            <a asp-action="Profile" asp-controller="Player" asp-route-id="@item.AuthorId" class="text-dark"> @item.AuthorName </a> <a asp-action="Profile" asp-controller="Player" asp-route-id="@item.AssistId" class="">(@item.AssistName)</a>
+
+                        }
+                        else
+                        {
+                            <a asp-action="Profile" asp-controller="Player" asp-route-id="@item.AuthorId" class="text-dark"> @item.AuthorName </a>
+                        }
+
+                    </div>
+                    <div class="col-sm-2">
+                        <img src="https://www.freepnglogos.com/uploads/football-png/drawing-football-photo-4.png" height="20" />
+                    </div>
+                </div>
+            }
+        }
+        <hr />
+
+    </div>
+</div>
+
+
+<div class="row text-center">
+    <div class="col-md">
+        <p class="mt-2 text-secondary bg-warning font-weight-bold">Карточки команды @Model.HomeTeam</p>
+        <hr />
+        @foreach (var item in Model.HomeTeamCards)
+        {
+            <div class="row text-dark text-center">
+                @if (item.Type == "Красная")
+                {
+                    <div class="col-sm-2">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Red_card.svg" height="20" />
+                    </div>
+                }
+                else if (item.Type == "Желтая")
+                {
+
+                    <div class="col-sm-2 my-auto">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Yellow_card.svg/1200px-Yellow_card.svg.png" height="20" />
+                    </div>
+                }
+                else if (item.Type == "ЖК")
+                {
+                    <div class="col-sm-2" my-auto">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Yellow-red_card.svg/1200px-Yellow-red_card.svg.png" height="20" />
+                    </div>
+                }
+                <div class="col-sm-8 my-auto text-center"><a asp-action="Profile" asp-controller="Player" asp-route-id="@item.PlayerId">@item.PlayerName</a></div>
+                <div class="col-sm-2">@item.AtMinute'</div>
+            </div>
+        }
+        <hr />
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md">
+        <p class="mt-2  text-secondary bg-warning font-weight-bold">Карточки команды @Model.AwayTeam</p>
+        <hr />
+        @foreach (var item in Model.AwayTeamCards)
+        {
+            <div class="row text-dark text-center">
+
+                <div class="col-sm-2">@item.AtMinute'</div>
+
+                <div class="col-sm-8 my-auto text-center"><a asp-action="Profile" asp-controller="Player" asp-route-id="@item.PlayerId">@item.PlayerName</a></div>
+                @if (item.Type == "Красная")
+                {
+                    <div class="col-sm-2">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Red_card.svg" height="20" />
+                    </div>
+                }
+                else if (item.Type == "Желтая")
+                {
+
+                    <div class="col-sm-2" my-auto">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Yellow_card.svg/1200px-Yellow_card.svg.png" height="20" />
+                    </div>
+                }
+                else if (item.Type == "ЖК")
+                {
+                    <div class="col-sm-2" my-auto">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Yellow-red_card.svg/1200px-Yellow-red_card.svg.png" height="20" />
+                    </div>
+                }
+            </div>
+        }
+        <hr />
+    </div>
+</div>
+@if (User.IsInRole("Admin"))
+{
+    <div class="row">
+        <div class="col ">
+            <a asp-controller="Fixture" asp-action="Manage" asp-route-id="@Model.FixtureId" class="float-right my-4"><div class="btn btn-warning">Изменить результаты матча</div></a>
+        </div>
+    </div>
+}
+

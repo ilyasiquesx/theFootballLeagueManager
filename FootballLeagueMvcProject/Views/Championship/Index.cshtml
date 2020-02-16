@@ -1,0 +1,45 @@
+﻿@model IEnumerable<FootballLeagueMvcProject.ViewModels.ChampionshipViewModel>
+@{
+    ViewData["Title"] = "Список соревнований";
+}
+
+<div class="p-4">
+
+    <div class="row">
+        <div class="col-md-12 mx-auto">
+            <h1 class=" text-white p-2 compHeader text-center text-uppercase" style="background: #57bc90 ">Список всех соревнований</h1>
+        </div>
+    </div>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="my-3 text-right">
+            <a asp-action="Create" asp-controller="Championship"><div class="btn btn-danger my-2 text-right">Объявить соревнование</div></a>
+        </div>
+    }
+
+    @if (Model.Count() == 0)
+    {
+        <h3 class="bg-danger text-white p-2 text-center text-uppercase">Список соревнований пуст</h3>
+    }
+    @foreach (var item in Model)
+    {
+        <div class="row text-center mx-auto">
+            <div class="col mx-auto">
+                <a asp-controller="Competition" asp-action="Index" asp-route-id="@item.Id" class="btn btn-sm btn-success text-center">
+                   @item.Name
+                </a>
+            </div>
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="col-md-2 col-sm-4 col-4">
+                    <form asp-action="Delete" asp-controller="Championship"><input hidden value="@item.Id" name="id" /><button class="btn btn-sm btn-block btn-danger" type="submit">Удалить</button></form>
+                </div>
+            }
+        </div>
+
+    }
+
+
+</div>
+

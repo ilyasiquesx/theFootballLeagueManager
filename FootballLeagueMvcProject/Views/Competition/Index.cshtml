@@ -1,0 +1,30 @@
+﻿@model FootballLeagueMvcProject.ViewModels.CompetitionViewModel
+@{
+    ViewData["Title"] = $"{Model.Name}";
+}
+
+<h2 class="bg-info text-white p-2 text-center">@Model.Name</h2>
+<div class="row text-center mt-2 ">
+    <div class="col-xl m-2">
+        <a asp-controller="Competition" asp-action="Table" asp-route-id="@Model.Id" class="btn btn-sm btn-success btn-block font-weight-bold">Таблица</a>
+    </div>
+    <div class="col-xl m-2">
+        <a asp-controller="Competition" asp-action="Teams" asp-route-id="@Model.Id" class="btn btn-sm btn-success btn-block font-weight-bold">Команды</a>
+    </div>
+
+    <div class="col-xl m-2">
+        <a asp-controller="Competition" asp-action="Results" asp-route-id="@Model.Id" class="btn btn-sm btn-success btn-block font-weight-bold">Результаты</a>
+    </div>
+
+    <div class="col-xl m-2">
+        <a asp-controller="Competition" asp-action="Stats" asp-route-id="@Model.Id" class="btn btn-sm btn-success btn-block font-weight-bold">Статистика игроков</a>
+    </div>
+</div>
+<hr />
+<div class="jumbotron bg-info text-white text-center">
+    <h1>Добро пожаловать.</h1>
+    <p class="lead my-4">Вы находитесь на главной странице первенства: @Model.Name. Для поиска интересующей вас информации пользуйтесь навигацинной панелью сверху.</p>
+    <hr class="my-4">
+    <p>Данный раздел содержит подробную информацию о текущей стадии соревнования.</p>
+</div>
+
